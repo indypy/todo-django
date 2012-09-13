@@ -1,6 +1,6 @@
 # IndyPy Web Framework Shootout
 
-IndyPy will have a web framework shootout to compare several popular web frameworks. The goal is to see how the frameworks compare from a developer perspective.
+[IndyPy](http://www.meetup.com/python-182/) is having  a web framework shootout to compare several popular python based web frameworks. The goal is to see how the frameworks compare from a developer perspective.
 
 ## ToDo app details
 
