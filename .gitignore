@@ -1,1 +1,3 @@
 direct_todo/directtodo
+*.pyc
+*.swp
