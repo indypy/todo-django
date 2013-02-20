@@ -19,8 +19,12 @@ urlpatterns = patterns('',
         {
             'template_name': 'index.html'
             }
-        ),    
-    url(r'^profile/', 'direct_todo.views.profile'),    
+        ),
+    url(r'^profile/add-task/$', 
+        'direct_todo.views.add_task'),
+    url(r'^profile/delete-task/(?P<task_id>\w+)/$', 
+        'direct_todo.views.delete_task'),    
+    url(r'^profile/$', 'direct_todo.views.profile'),    
     url(r'^admin/', include(admin.site.urls)),    
 )
 
