@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from models import Task 
 
 class TagTaskFilter(admin.SimpleListFilter):
@@ -43,7 +44,9 @@ class TaskAdmin(admin.ModelAdmin):
         return super(TaskAdmin, self).has_delete_permission(request, obj)
 
     def save_model(self, request, obj, form, change):
-        if not request.user.is_superuser:
+        try:
+            obj.user
+        except ObjectDoesNotExist:
             obj.user = request.user
         obj.save()
 
