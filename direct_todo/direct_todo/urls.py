@@ -13,5 +13,14 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'direct_todo.views.home'),
+    url(r'^login/$', 
+        'django.contrib.auth.views.login', 
+        {
+            'template_name': 'index.html'
+            }
+        ),    
+    url(r'^profile/', 'direct_todo.views.profile'),    
+    url(r'^admin/', include(admin.site.urls)),    
 )
+

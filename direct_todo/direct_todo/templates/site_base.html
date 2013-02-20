@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="http://css.nlx.org/framework/v2/css/def.ui.css"
+        rel="stylesheet" type="style/css">
+    <title>IndyPy: Web Shootout</title>
+    <style>
+    .loginBox, .formBox{
+        background-color: #fff;
+        padding: 10px;
+        padding-bottom: 30px;
+        border: 2px solid #574E44;
+        border-radius: 5px;
+        }    
+    </style>
+    {% block extra_header %}{%endblock%}
+</head>
+<body>
+    {% block topbar %}
+    <div class="topbar" data-dropdown="dropdown">
+        <div class="topbar-inner">
+            <div class="wrapper">
+            <div class="row">
+                <div class="span4" id="logo-block">
+                    <a href="/">
+                       <h3 class="pull-left">Home</h3>
+                    </a>
+                </div>                
+            </div>
+            </div>
+        </div><!-- /topbar-inner -->
+    </div>
+    {%endblock%}
+    {% block body %}{%endblock%}
+</body>
+</html>

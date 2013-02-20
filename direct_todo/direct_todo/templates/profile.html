@@ -1,0 +1,23 @@
+{% extends "site_base.html" %}
+{% block body %}
+<section><div class="section subpage">
+    <div class="wrapper">    
+        <div class="row">
+            <div class="span6">
+                {{user}}
+            </div>
+            <div class="span6">
+                <h2>Your Tasks</h2>
+                <a href="/add-list/">Add a new task</a>
+                <div>
+                <ul>
+                {% for task in tasks %}
+                    <li>{{list}}</li>
+                {% endfor %}
+                </ul>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div></section>
+{% endblock body %}
