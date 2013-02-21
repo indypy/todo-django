@@ -76,9 +76,10 @@
                     </div>
                 </div>
                 <div class="span1">
-                    <div  class="text-right"
+                    <div  class="text-right">
                     {% if user.is_authenticated %}
                     <form action="/logout/" method="post">
+                        {% csrf_token %}
                         <input type="hidden" name="next" value="/"/>
                         <input type="submit" value="logout" class="btn priamry"/>
                     </form>

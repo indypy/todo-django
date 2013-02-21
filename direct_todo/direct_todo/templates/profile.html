@@ -8,7 +8,8 @@ function delete_task(task){
     var msg = $.ajax({
                 url:"/profile/delete-task/"+task+"/",
                 success: function(){
-                    $("#task-"+task).fadeOut(500);                    
+                    $("#task-"+task).fadeOut(500);
+                    setTimeout($("#task-"+task).remove(),1000);                    
                     }
                 });    
 }

@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^profile/tags/$', 
         'direct_todo.views.filter_by_tag'),
     
-    url(r'^profile/tags/(?P<tag>\w+)/$', 
+    url(r'^profile/tags/(?P<tag>.+)/$', 
         'direct_todo.views.filter_by_tag'),
     
     url(r'^profile/add-task/$', 

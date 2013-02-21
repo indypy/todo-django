@@ -43,12 +43,9 @@ def add_task(request):
     task_tags = request.GET.get('tags')
     new_task = Task(title=task_title,due_date=task_date,user=request.user)
     new_task.save()
-    #need to split by commas for propper adding
     for tag in task_tags.split(","):
-        print tag
         new_task.tags.add(tag)
     new_task.save()
-    #task.delete()
     return HttpResponse(new_task.id)
 
 
@@ -70,6 +67,7 @@ def filter_by_tag(request,tag=""):
     if tag:
         tasks = Task.objects.filter(tags__name__in=[tag])
         ctx["tasks"] = tasks
+        ctx["search"] = "tag: "+tag
         template = "profile.html"
     else:
         tags = Tag.objects.order_by('name')
