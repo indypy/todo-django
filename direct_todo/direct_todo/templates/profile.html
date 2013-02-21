@@ -71,7 +71,11 @@ function get_task(task_id){
                     <td>
                         <b>{{task.title}}</b>
                     </td><td>
+                        {% if task.due_date == now %}
+                            <span class="label label-danger">{{task.due_date}}</span>
+                        {% else %}
                         {{task.due_date}}
+                        {% endif %}
                     </td><td> 
                     {% for tag in task.tags.all %}
                         <a href="/profile/tags/{{tag}}/" class="label label-info">{{tag}}</a>
@@ -85,12 +89,48 @@ function get_task(task_id){
             <div class="span5">           
                 <div class="formBox">
                     <h2>Search Tasks</h2>
-                    <form class="form-search" action="/profile/" method="get">
-                        <input type="text" name="search"
-                            placeholder = "task title" 
-                            class="input-medium search-query">
-                        <button type="submit" class="btn">Search</button>
+                    <form class="form-horizontal" action="/profile/" method="get">
+                        <div class="control-group">
+                            <label class="control-label" for="search">Title or Tag</label>
+                            <div class="controls">
+                                <input type="text" name="search"
+                                    placeholder = "" 
+                                    class="input-medium search-query">
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="due">Due Date</label>
+                            <div class="controls">
+                                <input type="text" name="due"
+                                    placeholder = "due date" 
+                                    class="input-medium search-query datefield">
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="orderby">Order By</label>
+                            <div class="controls">
+                                <select name="orderby">
+                                    <option value="due_date">Due Date</option>
+                                    <option value="title">Title</option>
+                                    <option value="due_date">Due Date (descending)</option>
+                                    <option value="title">Title (Reverse Alphabetical)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label"> </label>
+                            <div class="controls">
+                                <button type="submit" class="btn">Search</button>
+                                <a href='/profile/?due={% now "m/d/Y" %}' class="btn btn-danger" >
+                                    Show all due today
+                                </a>
+                            </div>
+                        </div>
                     </form>
+                    
                 </div>
                 <div class="formBox">                
                     <h2>Add task</h2>

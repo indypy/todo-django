@@ -6,6 +6,7 @@ from taggit.models import *
 from django.contrib.auth import authenticate, login
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 def home(request):
     return render_to_response("index.html",{},
@@ -15,11 +16,30 @@ def home(request):
 def profile(request):
     user=request.user
     search = request.GET.get("search")
-        
-    if search:
-        tasks = Task.objects.filter(user=user).filter(title__contains=search)
+    order = request.GET.get("orderby")
+    due = request.GET.get("due")
+    
+    if not order:
+        order = "due_date"    
+    
+    if due:
+        due_dt = datetime.strptime(due,"%m/%d/%Y")
+      
+    if search and due:
+        tasks = Task.objects.get(
+            Q(title__contains=search)|Q(tags__name__contains=search),
+            user=user).filter(due_date=due_dt).order_by(order)
+        search = "%s, Due: %s" % (search,due)
+    elif search:
+        tasks = Task.objects.filter(
+            Q(title__contains=search)|Q(tags__name__contains=search),
+            user=user).order_by(order)    
+    elif due:
+        tasks = Task.objects.filter(user=user).filter(
+            due_date=due_dt).order_by(order)
+        search = "Due: "+due
     else:
-        tasks = Task.objects.filter(user=user)
+        tasks = Task.objects.filter(user=user).order_by(order)
     ctx= {
         "user":user,
         "tasks":tasks,
