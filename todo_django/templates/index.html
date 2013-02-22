@@ -1,0 +1,42 @@
+{% extends "site_base.html" %}
+{% block body %}
+<section><div class="section subpage">
+    <div class="wrapper">    
+        <div class="row">
+            <div class="span6">            
+                <h1>Todo Django</h1>
+                <p>A Django powered to do app for the IndyPy Web Shootout</p>
+            </div>          
+            <div class="span6">
+                <div class="loginBox">
+                    <h2>Login</h2>
+                    <form action="/login/" method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <label class="control-label" for="username">Username</label>
+                        <div class="controls">
+                            <input type="text" 
+                                placeholder="username" name="username"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="password">Password</label>
+                        <div class="controls">
+                            <input type="password" 
+                                placeholder="password" name="password"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label"></label>
+                        <div class="controls">
+                            <input type="hidden" name="next" value="/profile/" />
+                            <input class="btn primary" type="submit" value="Login"/>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>            
+        </div>                                 
+    </div>    
+</div></section>
+{%endblock%}

@@ -1,0 +1,13 @@
+<tr id="task-{{task.id}}" style="display: none">
+    <td>
+        <b>{{task.title}}</b>
+    </td><td>
+        {{task.due_date}}
+    </td><td> 
+    {% for tag in task.tags.all %}
+       <a href="/profile/tags/{{tag}}/" class="label label-info">{{tag}}</a>
+    {%endfor%}
+    </td><td>
+    <button onclick="delete_task('{{task.id}}');" class="btn">Done</button>
+    </td>
+</tr>

@@ -1,0 +1,169 @@
+{% extends "site_base.html" %}
+{% block extra_header %}
+<script>
+$(document).ready(function(){
+    $(".datefield").datepicker()
+});
+function delete_task(task){
+    var msg = $.ajax({
+                url:"/profile/delete-task/"+task+"/",
+                success: function(){
+                    $("#task-"+task).fadeOut(500);
+                    setTimeout($("#task-"+task).remove(),1000);                    
+                    }
+                });    
+}
+function add_task(){
+    title=$("#newtask-title").val();
+    tags=$("#newtask-tags").val();
+    date=$("#newtask-date").val();
+    var new_task = $.ajax({
+                     url:"/profile/add-task/",
+                     data:"title="+title+"&date="+date+"&tags="+tags,
+                     success: function(task_id){
+                         $("#new_task_form")[0].reset();
+                         get_task(task_id);
+                         }
+                   });
+}
+function get_task(task_id){
+    $.ajax({
+        url:"/profile/get-task/"+task_id+"/",
+        success: function(result){
+            $("#task_table").append(result);
+            $("#task-"+task_id).fadeIn(500); 
+        }
+    });
+}
+</script>
+{% endblock extra_header %}
+{% block body %}
+<section><div class="section subpage">
+    <div class="wrapper">    
+        <div class="row">
+            <div class="span12">
+            <h1>{{user}}'s Tasks</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span7">
+                {% if search %}
+                    {% if tasks %}
+                        <div class="alert alert-success">
+                            Showing results for "<b>{{search}}</b>"
+                            <div class="pull-right">
+                                <a class="btn btn-warning" href="/profile/">Clear search</a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            There were no results for "<b>{{search}}</b>"
+                        </div>
+                    {% endif %}
+                {% endif %}
+                <table class="table table-striped table-bordered" id="task_table">                
+                <tr>
+                    <th>Task</th><th>Due Date</th><th colspan="2">Tags (<a href="tags/">View All</a>)</th>
+                </tr>
+                {% for task in tasks %}
+                    <tr id="task-{{task.id}}">
+                    <td>
+                        <b>{{task.title}}</b>
+                    </td><td>
+                        {% if task.due_date == now %}
+                            <span class="label label-danger">{{task.due_date}}</span>
+                        {% else %}
+                        {{task.due_date}}
+                        {% endif %}
+                    </td><td> 
+                    {% for tag in task.tags.all %}
+                        <a href="/profile/tags/{{tag}}/" class="label label-info">{{tag}}</a>
+                    {%endfor%}
+                    </td><td>
+                    <button onclick="delete_task('{{task.id}}');" class="btn">Done</button>
+                    </td></tr>
+                {% endfor %}
+                </table>              
+            </div>
+            <div class="span5">           
+                <div class="formBox">
+                    <h2>Search Tasks</h2>
+                    <form class="form-horizontal" action="/profile/" method="get">
+                        <div class="control-group">
+                            <label class="control-label" for="search">Title or Tag</label>
+                            <div class="controls">
+                                <input type="text" name="search" placeholder = "" />
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="due">Due Date</label>
+                            <div class="controls">
+                                <input type="text" name="due"
+                                    placeholder = "due date" class="datefield" />
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="orderby">Order By</label>
+                            <div class="controls">
+                                <select name="orderby">
+                                    <option value="due_date">Due Date</option>
+                                    <option value="title">Title</option>
+                                    <option value="due_date">Due Date (descending)</option>
+                                    <option value="title">Title (Reverse Alphabetical)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label"> </label>
+                            <div class="controls">
+                                <button type="submit" class="btn">Search</button>
+                                <a href='/profile/?due={% now "m/d/Y" %}' class="btn btn-danger" >
+                                    Show all due today
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
+                <div class="formBox">                
+                    <h2>Add task</h2>
+                    <form onsubmit="add_task();return false;" id="new_task_form" class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="username">Title</label>
+                            <div class="controls">
+                                <input type="text" placeholder="Make awesome" id="newtask-title"/>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="password">Due Date</label>
+                            <div class="controls">
+                                <input type="text" class="datefield" placeholder="03/01/2013" id="newtask-date"/>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" for="password">Tags</label>
+                            <div class="controls">
+                                <input type="text" placeholder="html,urgent,epic" id="newtask-tags"/>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label"></label>
+                            <div class="controls">
+                                <input type="submit" class="btn primary" value="save" id="newtask-submit"/>
+                            </div>
+                        </div>                        
+                    </form>
+                </div>
+                                
+            </div>
+        </div>
+    </div>
+</div></section>
+{% endblock body %}
