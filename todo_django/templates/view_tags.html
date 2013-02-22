@@ -1,0 +1,60 @@
+{% extends "site_base.html" %}
+{% block extra_header %}
+<script>
+$(document).ready(function(){
+    $(".datefield").datepicker()
+});
+function delete_task(task){
+    var msg = $.ajax({
+                url:"/profile/delete-task/"+task+"/",
+                success: function(){
+                    $("#task-"+task).fadeOut(500);                    
+                    }
+                });    
+}
+function add_task(){
+    title=$("#newtask-title").val();
+    tags=$("#newtask-tags").val();
+    date=$("#newtask-date").val();
+    var new_task = $.ajax({
+                     url:"/profile/add-task/",
+                     data:"title="+title+"&date="+date+"&tags="+tags,
+                     success: function(task_id){
+                         $("#new_task_form")[0].reset();
+                         get_task(task_id);
+                         }
+                   });
+}
+function get_task(task_id){
+    $.ajax({
+        url:"/profile/get-task/"+task_id+"/",
+        success: function(result){
+            $("#task_table").append(result);
+            $("#task-"+task_id).fadeIn(500); 
+        }
+    });
+}
+</script>
+{% endblock extra_header %}
+{% block body %}
+<section><div class="section subpage">
+    <div class="wrapper">    
+        <div class="row">
+            <div class="span12">
+            <h1>{{user}}'s Tags</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span7 formBox">
+                <ul>
+                {% for tag in tags %}
+                    <li>
+                        <a href="/profile/tags/{{tag}}/" class="label label-info">{{tag}}</a>
+                    </li>
+                {%endfor%}                    
+                </ul>              
+            </div>            
+        </div>
+    </div>
+</div></section>
+{% endblock body %}
