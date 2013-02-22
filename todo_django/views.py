@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from direct_todo.models import *
+from todo_django.models import *
 
 from taggit.models import *
 
