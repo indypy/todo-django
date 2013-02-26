@@ -1,3 +1,37 @@
+#Todo-Django
+A django web app for basic task lists that are segmented by user.
+
+##Setup Instructions 
+Todo-Django was developed on Ubuntu 12, but any Linux environment with python 2.6+ should work.
+- *It is recommended you use a virtual environment*
+- $ pip install -r requirements.txt
+- $ python manage.py syncdb
+- $ python manage.py runserver
+
+## Features
+- Requires Login
+  - Users must be created via Django Admin
+- Create Task
+- Delete Task
+- Tag Tasks
+  - Also provides filtering by tag name
+- Search Tasks
+  - search by date
+  - search by title
+  - search by tag name
+- Single UI for most important tasks
+  - creation, search, and deleting of tasks is all AJAX
+
+###Includes many features inherited from Django:
+  - Robust Admin
+  - Supports multiple databases
+  - Robust templating engine
+
+## Third Party Code
+- [DirectEmployers UI Framework](https://github.com/DirectEmployers/UI-Framework) (based on Bootstrap)
+- [Django-Taggit](https://github.com/alex/django-taggit)
+
+-----------------------------
 # IndyPy Web Framework Shootout
 
 [IndyPy](http://www.meetup.com/python-182/) is having  a web framework shootout to compare several popular python based web frameworks. The goal is to see how the frameworks compare from a developer perspective.
