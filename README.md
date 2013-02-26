@@ -28,10 +28,10 @@ $ python manage.py runserver
   - Robust templating engine
 
 ## Third Party Code
-[DirectEmployers UI Framework](https://github.com/DirectEmployers/UI-Framework) (based on Bootstrap)
-[Django-Taggit](https://github.com/alex/django-taggit)
+- [DirectEmployers UI Framework](https://github.com/DirectEmployers/UI-Framework) (based on Bootstrap)
+- [Django-Taggit](https://github.com/alex/django-taggit)
 
-==============================
+-----------------------------
 # IndyPy Web Framework Shootout
 
 [IndyPy](http://www.meetup.com/python-182/) is having  a web framework shootout to compare several popular python based web frameworks. The goal is to see how the frameworks compare from a developer perspective.
