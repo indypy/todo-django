@@ -1,0 +1,31 @@
+<VirtualHost *:80>
+        ServerAdmin info@directemployers.org
+
+    DocumentRoot /var/www
+    # path for admin static files. Change if your python and/or django install path is
+    # different (such as in the case of a virtual environment)
+    Alias /static/ /usr/local/lib/python2.7/dist-packages/django/contrib/admin/static/
+    <Directory /path/to/files>
+    Order allow,deny
+    Allow from all
+    </Directory>
+    <Directory />
+    Options FollowSymLinks
+    Order deny,allow
+    Allow from all
+    </Directory>
+
+    # location of the django wsgi file
+    WSGIScriptAlias / /home/ubuntu/todo-django/django.wsgi
+
+    # location of the django project
+    <Directory /home/ubuntu/todo-django>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    ErrorLog /var/log/apache2/error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/access.log combined
+</VirtualHost>
+
