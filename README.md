@@ -3,10 +3,10 @@ A django web app for basic task lists that are segmented by user.
 
 ##Setup Instructions 
 Todo-Django was developed on Ubuntu 12, but any Linux environment with python 2.6+ should work.
-*It is recommended you use a virtual environment*
-$ pip install -r requirements.txt
-$ python manage.py syncdb
-$ python manage.py runserver
+- *It is recommended you use a virtual environment*
+- $ pip install -r requirements.txt
+- $ python manage.py syncdb
+- $ python manage.py runserver
 
 ## Features
 - Requires Login
