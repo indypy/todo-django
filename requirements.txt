@@ -1,2 +1,2 @@
 django==1.4.3
-django-taggit
+django-taggit==0.9.3
