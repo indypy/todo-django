@@ -45,7 +45,7 @@ then build the database tables required by Django-Celery.
 
 You'll also need to run a celery worker.
 
-    $ python manage.py celery
+    $ python manage.py celery worker
 
 #### New Feature
 

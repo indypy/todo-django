@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'todo_django',
     'taggit',
     'djcelery',
+    'kombu.transport.django',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -153,6 +154,10 @@ LOGGING = {
         },
     }
 }
+
+# Use the database as Celery's broker. This is a horrible production setting,
+# but makes for an easy-to-use demo
+BROKER_URL = 'django://'
 
 import djcelery
 djcelery.setup_loader()
