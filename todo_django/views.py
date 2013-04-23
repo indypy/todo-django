@@ -178,7 +178,9 @@ def filter_by_tag(request,tag=""):
 @login_required
 def export_as_csv(request):
     # Let's make a new export!
-    task_pks = Task.objects.all().values_list('pk', flat=True)
+    task_pks = Task.objects.filter(
+        user=request.user,
+    ).values_list('pk', flat=True)
     # Evaluate the queryset before sending it to the celery broker
     task_pks = list(task_pks)
     result = ExportTasksAsCsv.delay_or_fail(
