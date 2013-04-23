@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'todo_django',
     'taggit',
+    'djcelery',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -152,3 +153,6 @@ LOGGING = {
         },
     }
 }
+
+import djcelery
+djcelery.setup_loader()

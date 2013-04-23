@@ -1,7 +1,7 @@
-#Todo-Django
+# Todo-Django
 A django web app for basic task lists that are segmented by user.
 
-##Setup Instructions 
+## Setup Instructions
 Todo-Django was developed on Ubuntu 12, but any Linux environment with python 2.6+ should work.
 - *It is recommended you use a virtual environment*
 - $ pip install -r requirements.txt
@@ -22,7 +22,7 @@ Todo-Django was developed on Ubuntu 12, but any Linux environment with python 2.
 - Single UI for most important tasks
   - creation, search, and deleting of tasks is all AJAX
 
-###Includes many features inherited from Django:
+### Includes many features inherited from Django:
   - Robust Admin
   - Supports multiple databases
   - Robust templating engine
@@ -30,6 +30,27 @@ Todo-Django was developed on Ubuntu 12, but any Linux environment with python 2.
 ## Third Party Code
 - [DirectEmployers UI Framework](https://github.com/DirectEmployers/UI-Framework) (based on Bootstrap)
 - [Django-Taggit](https://github.com/alex/django-taggit)
+
+## Enhancements
+
+### Celery CSV report
+
+#### Installation
+
+Install the Celery and Jobtastic,
+then build the database tables required by Django-Celery.
+
+    $ pip install -r requirements.txt
+    $ python manage.py syncdb
+
+You'll also need to run a celery worker.
+
+    $ python manage.py celery
+
+#### New Feature
+
+You now have the ability to download a CSV of all of your tasks.
+That CSV is generated on Celery and gives you progress updates!
 
 -----------------------------
 # IndyPy Web Framework Shootout
