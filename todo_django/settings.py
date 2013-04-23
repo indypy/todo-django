@@ -155,6 +155,13 @@ LOGGING = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+    },
+}
+
 # Use the database as Celery's broker. This is a horrible production setting,
 # but makes for an easy-to-use demo
 BROKER_URL = 'django://'

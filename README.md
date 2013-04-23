@@ -42,6 +42,7 @@ then build the database tables required by Django-Celery.
 
     $ pip install -r requirements.txt
     $ python manage.py syncdb
+    $ python manage.py createcachetable cache_table
 
 You'll also need to run a celery worker.
 
