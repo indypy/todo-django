@@ -1,89 +1,58 @@
 {% extends "site_base.html" %}
-{% block extra_header %}
-<script>
-$(document).ready(function(){
-    $(".datefield").datepicker()
-});
-function delete_task(task){
-    var msg = $.ajax({
-                url:"/profile/delete-task/"+task+"/",
-                success: function(){
-                    $("#task-"+task).fadeOut(500);
-                    setTimeout($("#task-"+task).remove(),1000);
-                    }
-                });
-}
-function add_task(){
-    title=$("#newtask-title").val();
-    tags=$("#newtask-tags").val();
-    date=$("#newtask-date").val();
-    var new_task = $.ajax({
-                     url:"/profile/add-task/",
-                     data:"title="+title+"&date="+date+"&tags="+tags,
-                     success: function(task_id){
-                         $("#new_task_form")[0].reset();
-                         get_task(task_id);
-                         }
-                   });
-}
-function get_task(task_id){
-    $.ajax({
-        url:"/profile/get-task/"+task_id+"/",
-        success: function(result){
-            $("#task_table").append(result);
-            $("#task-"+task_id).fadeIn(500);
-        }
-    });
-}
-</script>
-{% endblock extra_header %}
 {% block body %}
 <section>
 <div class="section subpage">
     <div class="wrapper">
         <div class="row">
             <div class="span12">
-                <h1>{{user}}'s Tasks</h1>
+                <h1>{{ user }}'s Tasks</h1>
             </div>
         </div>
         <div class="row">
             <div class="span7">
-                {% if search %}
-                    {% if tasks %}
-                        <div class="alert alert-success">
-                            Showing results for "<b>{{search}}</b>"
-                            <div class="pull-right">
-                                <a class="btn btn-warning" href="/profile/">Clear search</a>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-warning">
-                            There were no results for "<b>{{search}}</b>"
-                        </div>
-                    {% endif %}
-                {% endif %}
+        {% if search %}
+            {% if tasks %}
+                <div class="alert alert-success">
+                    Showing results for "<strong>{{ search }}</strong>"
+                    <div class="pull-right">
+                        <a class="btn btn-warning" href="/profile/">Clear search</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    There were no results for "<strong>{{ search }}</strong>"
+                </div>
+            {% endif %}
+        {% endif %}
                 <table class="table table-striped table-bordered" id="task_table">
-                <tr>
-                    <th>Task</th><th>Due Date</th><th colspan="2">Tags (<a href="tags/">View All</a>)</th>
-                </tr>
+                    <tr>
+                        <th>Task</th>
+                        <th>Due Date</th>
+                        <th colspan="2">Tags (<a href="tags/">View All</a>)</th>
+                    </tr>
                 {% for task in tasks %}
-                    <tr id="task-{{task.id}}">
-                    <td>
-                        <b>{{task.title}}</b>
-                    </td><td>
+                    <tr id="task-{{ task.id }}">
+                        <td>
+                            <strong>{{ task.title }}</strong>
+                        </td>
+                        <td>
                         {% if task.due_date == now %}
-                            <span class="label label-danger">{{task.due_date}}</span>
+                            <span class="label label-danger">{{ task.due_date }}</span>
                         {% else %}
-                        {{task.due_date}}
+                            {{ task.due_date }}
                         {% endif %}
-                    </td><td>
-                    {% for tag in task.tags.all %}
-                        <a href="/profile/tags/{{tag}}/" class="label label-info">{{tag}}</a>
-                    {%endfor%}
-                    </td><td>
-                    <button onclick="delete_task('{{task.id}}');" class="btn">Done</button>
-                    </td></tr>
+                        </td>
+                        <td>
+                        {% for tag in task.tags.all %}
+                            <a href="/profile/tags/{{ tag }}/" class="label label-info">{{ tag }}</a>
+                        {% endfor %}
+                        </td>
+                        <td>
+                            <button class="delete-task-btn"
+                                data-taskid="{{ task.id }}" class="btn">Done</button>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </table>
             </div>
@@ -132,7 +101,7 @@ function get_task(task_id){
                 </div>
                 <div class="formBox">
                     <h2>Add task</h2>
-                    <form onsubmit="add_task();return false;" id="new_task_form" class="form-horizontal">
+                    <form id="new_task_form" class="form-horizontal">
                         <div class="control-group">
                             <label class="control-label" for="username">Title</label>
                             <div class="controls">
@@ -168,3 +137,60 @@ function get_task(task_id){
 </div>
 </section>
 {% endblock body %}
+
+{% block extra_js %}
+<script>
+function get_task(taskId) {
+    $.ajax({
+        url: "/profile/get-task/" + taskId + "/",
+        success: function(result) {
+            $("#task_table").append(result);
+            $("#task-" + taskId).fadeIn(500);
+        }
+    });
+}
+
+function delete_task(taskId) {
+    $.ajax({
+        url: "/profile/delete-task/" + taskId + "/",
+        success: function() {
+            $("#task-" + taskId).fadeOut(500);
+            setTimeout($("#task-" + taskId).remove(), 1000);
+        }
+    });
+}
+
+function add_task() {
+    var taskTitle = $("#newtask-title").val(),
+        taskTags = $("#newtask-tags").val(),
+        taskDate = $("#newtask-date").val(),
+        params;
+
+    params = "title=" + taskTitle;
+    params += "&date=" + taskDate;
+    params += "&tags=" + taskTags;
+
+    new_task = $.ajax({
+        url: "/profile/add-task/",
+        data: params,
+        success: function(task_id) {
+            $("#new_task_form")[0].reset();
+            get_task(task_id);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $(".datefield").datepicker();
+
+    $(".delete-task-btn").click(function() {
+        delete_task($(this).attr("data-task-id"));
+    });
+
+    $("#new_task_form").submit(function() {
+        add_task();
+        return false;
+    });
+}
+</script>
+{% endblock extra_js %}
