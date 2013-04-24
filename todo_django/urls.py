@@ -37,5 +37,9 @@ urlpatterns = patterns('',
         'todo_django.views.export_as_csv',
         name='todo_django_export_as_csv'
     ),
+    url(r'^export/(?P<task_id>[\w\d\-]+)/$',
+        'todo_django.views.export_as_csv',
+        name='todo_django_export_as_csv'
+    ),
 )
 

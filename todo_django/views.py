@@ -4,14 +4,17 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
-from django.utils import simplejson as json
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
+from django.utils import simplejson as json
 
-from todo_django.models import *
+import celery
+from celery.result import AsyncResult
+from taggit.models import *
+
+from todo_django.models import Task
 from todo_django.tasks import ExportTasksAsCsv
 
-from taggit.models import *
 
 
 def home(request):
@@ -176,7 +179,20 @@ def filter_by_tag(request,tag=""):
                               context_instance=RequestContext(request))
 
 @login_required
-def export_as_csv(request):
+def export_as_csv(request, task_id=None):
+    if task_id:
+        # The export task is complete. Let's display the results.
+        result = AsyncResult(task_id)
+        if result.status != celery.states.SUCCESS:
+            return HttpResponseBadRequest("Export didn't succeed")
+        if result.result is None:
+            return HttpResponseBadRequest("Export has no result")
+
+        response = HttpResponse(result.result['data'], mimetype='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=my_tasks.csv'
+
+        return response
+
     # Let's make a new export!
     task_pks = Task.objects.filter(
         user=request.user,
@@ -193,4 +209,4 @@ def export_as_csv(request):
     return HttpResponse(
         json_content,
         content_type='application/json',
-        **httpresponse_kwargs)
+    )
