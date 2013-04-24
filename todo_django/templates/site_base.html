@@ -4,7 +4,6 @@
     <link href="http://css.nlx.org/framework/v2/css/def.ui.css"
         rel="stylesheet" type="style/css">
     <title>IndyPy: Web Shootout</title>
-    <script src="http://js.nlx.org/framework/v2/js/def.ui.jquery.core.js" />
     <style>
     .topbar a{
         color: #fff;
@@ -88,10 +87,14 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /topbar-inner -->
+        </div>
     </div>
     {% endblock topbar %}
     {% block body %}{% endblock body %}
+    {% block main_js %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+    {% endblock main_js %}
     {% block extra_js %}{% endblock extra_js %}
 </body>
 </html>
