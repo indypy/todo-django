@@ -119,8 +119,14 @@
                     // Handler in case something goes wrong with the celery
                     // task
                     function error() {
-                        var msg = '<p class="error">There was an error generating your report.</p>';
+                        var msg = '<p class="error task_error">There was an error generating your report.</p>';
                         $('.progress_container').replaceWith(msg);
+
+                        // Give the user 5 seconds to see the message and then
+                        // give them the link back
+                        setTimeout(function() {
+                            $('.task_error').replaceWith(originalHtml);
+                        }, 5000);
                     }
 
                     // First, just get the task_id for the Celery task that
