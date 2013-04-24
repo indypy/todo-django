@@ -32,27 +32,7 @@
                         <th colspan="2">Tags (<a href="tags/">View All</a>)</th>
                     </tr>
                 {% for task in tasks %}
-                    <tr id="task-{{ task.id }}">
-                        <td>
-                            <strong>{{ task.title }}</strong>
-                        </td>
-                        <td>
-                        {% if task.due_date == now %}
-                            <span class="label label-danger">{{ task.due_date }}</span>
-                        {% else %}
-                            {{ task.due_date }}
-                        {% endif %}
-                        </td>
-                        <td>
-                        {% for tag in task.tags.all %}
-                            <a href="/profile/tags/{{ tag }}/" class="label label-info">{{ tag }}</a>
-                        {% endfor %}
-                        </td>
-                        <td>
-                            <button class="delete-task-btn"
-                                data-taskid="{{ task.id }}" class="btn">Done</button>
-                        </td>
-                    </tr>
+                    {% include "single_task.html" %}
                 {% endfor %}
                 </table>
             </div>
@@ -183,7 +163,7 @@ function add_task() {
 $(document).ready(function() {
     $(".datefield").datepicker();
 
-    $(".delete-task-btn").click(function() {
+    $(".delete-task-btn").live("click", function() {
         delete_task($(this).attr("data-task-id"));
     });
 
@@ -191,6 +171,6 @@ $(document).ready(function() {
         add_task();
         return false;
     });
-}
+});
 </script>
 {% endblock extra_js %}
