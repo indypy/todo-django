@@ -29,13 +29,16 @@ class ExportTasksAsCsv(JobtasticTask):
         # Gather all of the data for our CSV
         task_data = []
         for counter, task in enumerate(tasks):
-            if getattr(settings, 'TODO_EXPORT_VERY_SLOWLY', False):
-                time.sleep(5)
             task_data.append([
                 task.pk, task.title, task.due_date.isoformat(),
             ])
 
-            self.update_progress(counter, num_tasks, update_frequency=10)
+            # Normally, we'd use an update_frequency of a couple hundred to
+            # avoid hitting the cache so often when it will only be read every
+            # couple seconds. For demo purposes though, let's wear it out!
+            self.update_progress(counter, num_tasks, update_frequency=1)
+            if getattr(settings, 'TODO_EXPORT_VERY_SLOWLY', False):
+                time.sleep(5)
 
         # Now convert the data to CSV format
         w = CSVWriter()
