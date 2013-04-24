@@ -41,5 +41,7 @@ urlpatterns = patterns('',
         'todo_django.views.export_as_csv',
         name='todo_django_export_as_csv'
     ),
+
+    url(r'^task/', include('djcelery.urls')),
 )
 
