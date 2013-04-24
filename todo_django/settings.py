@@ -1,9 +1,9 @@
 # Django settings for todo_django project.
-import os.path
+import os
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -157,8 +157,8 @@ LOGGING = {
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'cache_table',
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/todo_django_cache',
     },
 }
 
@@ -168,3 +168,7 @@ BROKER_URL = 'django://'
 
 import djcelery
 djcelery.setup_loader()
+
+# For progress demo purposes, do we want to take several seconds between each
+# task for the export?
+TODO_EXPORT_VERY_SLOWLY = True

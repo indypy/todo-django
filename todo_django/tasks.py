@@ -1,6 +1,9 @@
 import csv
 import cStringIO
 import codecs
+import time
+
+from django.conf import settings
 
 from jobtastic import JobtasticTask
 
@@ -26,6 +29,8 @@ class ExportTasksAsCsv(JobtasticTask):
         # Gather all of the data for our CSV
         task_data = []
         for counter, task in enumerate(tasks):
+            if getattr(settings, 'TODO_EXPORT_VERY_SLOWLY', False):
+                time.sleep(5)
             task_data.append([
                 task.pk, task.title, task.due_date.isoformat(),
             ])
