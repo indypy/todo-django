@@ -105,71 +105,71 @@
                     originalHtml = $this.clone(),
                     progressHtml;
 
-                    progressHtml = [
-                        '<div class="progress_container">',
-                            '<div class="time_remaining">Waiting for Report Runner</div>',
-                            '<div class="progress progress-striped">',
-                                '<div class="bar" style="width: 0%"></div>',
-                            '</div>',
-                        '</div>'
-                    ].join('\n');
+                progressHtml = [
+                    '<div class="progress_container">',
+                        '<div class="time_remaining">Waiting for Report Runner</div>',
+                        '<div class="progress progress-striped">',
+                            '<div class="bar" style="width: 0%"></div>',
+                        '</div>',
+                    '</div>'
+                ].join('\n');
 
-                    $this.replaceWith(progressHtml);
+                $this.replaceWith(progressHtml);
 
-                    // Handler in case something goes wrong with the celery
-                    // task
-                    function error() {
-                        var msg = '<p class="error task_error">There was an error generating your report.</p>';
-                        $('.progress_container').replaceWith(msg);
+                // Handler in case something goes wrong with the celery
+                // task
+                function error() {
+                    var msg = '<p class="error task_error">There was an error generating your report.</p>';
+                    $('.progress_container').replaceWith(msg);
 
-                        // Give the user 5 seconds to see the message and then
-                        // give them the link back
-                        setTimeout(function() {
-                            $('.task_error').replaceWith(originalHtml);
-                        }, 5000);
-                    }
+                    // Give the user 5 seconds to see the message and then
+                    // give them the link back
+                    setTimeout(function() {
+                        $('.task_error').replaceWith(originalHtml);
+                    }, 5000);
+                }
 
-                    // First, just get the task_id for the Celery task that
-                    // will be building the export
-                    $.getJSON(exportUrl, function(data) {
-                        // Use djcelery to redirect to the CSV file once the
-                        // task completes
-                        $('.loading').djcelery({
-                            task_id: data['task_id'],
-                            check_interval: 2000,
-                            on_success: function (task) {
-                                // Redirect to export page with the task id
-                                var newUrl = exportUrl  + task.id + '/';
+                // First, just get the task_id for the Celery task that
+                // will be building the export
+                $.getJSON(exportUrl, function(data) {
+                    // Use djcelery to redirect to the CSV file once the
+                    // task completes
+                    $('.loading').djcelery({
+                        task_id: data['task_id'],
+                        check_interval: 2000,
+                        on_success: function (task) {
+                            // Redirect to export page with the task id
+                            var newUrl = exportUrl  + task.id + '/';
 
-                                // And replace the link to the export
-                                $('.progress_container').replaceWith(originalHtml);
+                            // And replace the link to the export
+                            $('.progress_container').replaceWith(originalHtml);
 
-                                setTimeout(function() {
-                                    window.location = newUrl;
-                                }, 1000);
-                            },
-                            on_failure: error,
-                            on_error: error,
-                            on_other: function(task_result) {
-                                var $progress_container = $('.progress_container'),
-                                    $time_remaining = $progress_container.find('.time_remaining'),
-                                    $progress_bar = $progress_container.find('.progress .bar');
-                                if (task_result.status == 'PROGRESS') {
-                                    // Set the percentage
-                                    var percent = task_result.result.progress_percent;
-                                    $progress_bar.css('width', percent + '%');
+                            setTimeout(function() {
+                                window.location = newUrl;
+                            }, 1000);
+                        },
+                        on_failure: error,
+                        on_error: error,
+                        on_other: function(task_result) {
+                            var $progress_container = $('.progress_container'),
+                                $time_remaining = $progress_container.find('.time_remaining'),
+                                $progress_bar = $progress_container.find('.progress .bar');
+                            if (task_result.status == 'PROGRESS') {
+                                // Set the percentage
+                                var percent = task_result.result.progress_percent;
+                                $progress_bar.css('width', percent + '%');
 
-                                    // Set time remaining
-                                    time_remaining = task_result.result.time_remaining;
-                                    if (time_remaining > 0) {
-                                        $time_remaining.html(
-                                            'Approximate time left: ' + Math.round(time_remaining) + ' seconds'
-                                        );
-                                    }
+                                // Set time remaining
+                                time_remaining = task_result.result.time_remaining;
+                                if (time_remaining > 0) {
+                                    $time_remaining.html(
+                                        'Approximate time left: ' + Math.round(time_remaining) + ' seconds'
+                                    );
                                 }
                             }
-                        });
+                        }
                     });
+                });
 
                 return false;
             });
