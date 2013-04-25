@@ -1,4 +1,3 @@
-tododjango
-todo_django/directtodo
+tododjango.db
+/static/
 *.pyc
-*.swp
