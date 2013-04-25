@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,8 +96,7 @@
     {% block main_js %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-    <!-- This is totally an evil hack. Need to set this up as a django static file -->
-    <script src="https://raw.github.com/PolicyStat/jquery-celery/master/src/celery.js"></script>
+    <script src="{% static "js/jquery-celery/celery.js" %}"></script>
     <script>
         $(document).ready(function() {
             $("#task_export").live('click', function (e) {
