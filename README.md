@@ -35,9 +35,19 @@ Todo-Django was developed on Ubuntu 12, but any Linux environment with python 2.
 
 ### Celery CSV report
 
+You now have the ability to download a CSV of all of your tasks!
+The CSV is generated in the background using
+[Celery](http://www.celeryproject.org/).
+We're also using [Jobtastic](http://policystat.github.io/jobtastic/)
+on the python side to add easy progress reporting and caching.
+On the client side, we're using
+[jquery-celery](https://github.com/PolicyStat/jquery-celery)
+to provide a Bootstrap progress bar for friendly reporting of the CSV progress.
+
 #### Installation
 
-Install the Celery and Jobtastic,
+Install [Celery](http://www.celeryproject.org/)
+and [Jobtastic](http://policystat.github.io/jobtastic/),
 then build the database tables required by Django-Celery.
 
     $ pip install -r requirements.txt
@@ -47,10 +57,6 @@ You'll also need to run a celery worker.
 
     $ python manage.py celery worker
 
-#### New Feature
-
-You now have the ability to download a CSV of all of your tasks.
-That CSV is generated on Celery and gives you progress updates!
 
 -----------------------------
 # IndyPy Web Framework Shootout
