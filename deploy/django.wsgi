@@ -10,5 +10,9 @@ from django.conf import settings
 os.environ["DJANGO_SETTINGS_MODULE"] = "todo_django.settings"
 
 from django.core.handlers.wsgi import WSGIHandler
+
+import djcelery
+djcelery.setup_loader()
+
 application = WSGIHandler()
 
